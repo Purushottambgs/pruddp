@@ -5,6 +5,7 @@ import { logger } from "hono/logger";
 import { productsRouter } from "./routes/products.js";
 import { searchRouter } from "./routes/search.js";
 import { clicksRouter } from "./routes/clicks.js";
+import { analyzeRouter } from "./routes/analyze.js";
 import { startWorkers } from "./workers.js";
 
 const app = new Hono();
@@ -44,6 +45,7 @@ app.get("/health", (c) => {
 app.route("/products", productsRouter);
 app.route("/search", searchRouter);
 app.route("/clicks", clicksRouter);
+app.route("/analyze", analyzeRouter);
 
 // ─── 404 handler ──────────────────────────────────────────────────────────
 

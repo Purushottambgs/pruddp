@@ -126,3 +126,40 @@ export interface ApiError {
 }
 
 export type ApiResponse<T> = ApiSuccess<T> | ApiError;
+
+// ─── URL-based product analysis ───────────────────────────────────────────
+
+export interface AnalysisResult {
+  url: string;
+  product: {
+    name: string;
+    brand: string;
+    category: string;
+    imageUrl: string | null;
+    price: number | null;
+    currency: string;
+    retailer: string;
+    asin: string | null;
+  };
+  trustScore: number;
+  verdict: TrustVerdict;
+  fakeReviewPercent: number;
+  pros: string[];
+  cons: string[];
+  buyVerdict: string;
+  summary: string;
+  sources: {
+    reddit: {
+      count: number;
+      sentiment: number;
+      topPosts: { title: string; subreddit: string; upvotes: number; url: string; snippet: string }[];
+    };
+    youtube: {
+      count: number;
+      sentiment: number;
+      videos: { videoId: string; title: string; channel: string; url: string }[];
+    };
+  };
+  analyzedAt: string;
+  cached: boolean;
+}

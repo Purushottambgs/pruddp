@@ -20,6 +20,9 @@ importers:
 
   apps/api:
     dependencies:
+      '@anthropic-ai/sdk':
+        specifier: ^0.36.3
+        version: 0.36.3
       '@hono/node-server':
         specifier: ^1.13.7
         version: 1.19.12(hono@4.12.9)

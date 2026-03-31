@@ -29,9 +29,9 @@ export default function HomePage() {
     e.preventDefault();
     const q = query.trim();
     if (!q) return;
-    // If it looks like a URL, go to product identify flow
+    // URL → catch-all analyze route (pruddo.ai/{url})
     if (q.startsWith("http")) {
-      router.push(`/search?url=${encodeURIComponent(q)}`);
+      router.push(`/${q}`);
     } else {
       router.push(`/search?q=${encodeURIComponent(q)}`);
     }

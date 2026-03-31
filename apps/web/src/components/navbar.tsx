@@ -25,7 +25,7 @@ export function Navbar() {
     const q = query.trim();
     if (!q) return;
     if (q.startsWith("http")) {
-      router.push(`/search?url=${encodeURIComponent(q)}`);
+      router.push(`/${q}`);
     } else {
       router.push(`/search?q=${encodeURIComponent(q)}`);
     }
