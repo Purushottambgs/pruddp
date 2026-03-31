@@ -29,6 +29,7 @@ import { Button } from "@/components/ui/button";
 import { TrustScoreBadge } from "@/components/trust-score-badge";
 import { PriceChart } from "@/components/price-chart";
 import { ProductCard } from "@/components/product-card";
+import { CouponCard, type Coupon } from "@/components/coupon-card";
 import { TRENDING_PRODUCTS } from "@/lib/mock-products";
 
 export default function ProductPage({
@@ -125,6 +126,99 @@ async function ProductDetails({ params }: { params: Promise<{ id: string }> }) {
       verdict: "mixed",
       snippet: "The hype is real but there are cheaper alternatives that get 90% of the way there.",
     },
+  ];
+
+  const COUPONS: Coupon[] = [
+    {
+      id: "c1",
+      code: "SAVE20",
+      description: `20% off ${product.name} — no minimum spend`,
+      type: "percent",
+      discount: "20% off",
+      savingsAmount: Math.round(product.price * 0.2 * 100) / 100,
+      retailer: "Amazon",
+      verified: true,
+      lastVerified: "2 hours ago",
+      successRate: 94,
+      usedCount: 2847,
+      expiresAt: "Apr 15, 2026",
+      isBest: true,
+      isExpired: false,
+    },
+    {
+      id: "c2",
+      code: "TECH15",
+      description: "$15 off on orders over $200 in Electronics",
+      type: "fixed",
+      discount: "$15 off",
+      savingsAmount: 15,
+      retailer: "Amazon",
+      verified: true,
+      lastVerified: "1 day ago",
+      successRate: 78,
+      usedCount: 1203,
+      expiresAt: "Apr 30, 2026",
+      isBest: false,
+      isExpired: false,
+    },
+    {
+      id: "c3",
+      code: "FREESHIP",
+      description: "Free express shipping — saves $8.99 on delivery",
+      type: "shipping",
+      discount: "Free shipping",
+      savingsAmount: 8.99,
+      retailer: "Best Buy",
+      verified: true,
+      lastVerified: "5 hours ago",
+      successRate: 91,
+      usedCount: 4120,
+      expiresAt: null,
+      isBest: false,
+      isExpired: false,
+    },
+    {
+      id: "c4",
+      code: "WELCOME10",
+      description: "10% off for first-time buyers",
+      type: "percent",
+      discount: "10% off",
+      savingsAmount: Math.round(product.price * 0.1 * 100) / 100,
+      retailer: "Target",
+      verified: true,
+      lastVerified: "3 hours ago",
+      successRate: 85,
+      usedCount: 6890,
+      expiresAt: "Mar 31, 2026",
+      isBest: false,
+      isExpired: false,
+    },
+    {
+      id: "c5",
+      code: "SPRINGSALE",
+      description: "15% off sitewide — spring sale",
+      type: "percent",
+      discount: "15% off",
+      savingsAmount: Math.round(product.price * 0.15 * 100) / 100,
+      retailer: "Amazon",
+      verified: false,
+      lastVerified: "4 days ago",
+      successRate: 22,
+      usedCount: 341,
+      expiresAt: "Mar 10, 2026",
+      isBest: false,
+      isExpired: true,
+    },
+  ];
+
+  const activeCoupons = COUPONS.filter((c) => !c.isExpired);
+  const expiredCoupons = COUPONS.filter((c) => c.isExpired);
+  const maxSavings = activeCoupons.reduce((max, c) => Math.max(max, c.savingsAmount), 0);
+
+  const CASHBACK = [
+    { provider: "Rakuten", rate: "6% cashback", savings: `$${(product.price * 0.06).toFixed(2)} back`, logo: "R", color: "bg-red-500" },
+    { provider: "TopCashback", rate: "5.5% cashback", savings: `$${(product.price * 0.055).toFixed(2)} back`, logo: "T", color: "bg-emerald-600" },
+    { provider: "Capital One Shopping", rate: "Up to 4% cashback", savings: `Up to $${(product.price * 0.04).toFixed(2)} back`, logo: "C", color: "bg-blue-600" },
   ];
 
   const FAKE_BREAKDOWN = [
@@ -323,6 +417,14 @@ async function ProductDetails({ params }: { params: Promise<{ id: string }> }) {
               <span className="ml-1.5 rounded-full bg-red-100 px-1.5 py-0.5 text-xs font-semibold text-red-600">
                 {YOUTUBE_VIDEOS.length}
               </span>
+            </TabsTrigger>
+            <TabsTrigger value="coupons">
+              Coupons
+              {activeCoupons.length > 0 && (
+                <span className="ml-1.5 rounded-full bg-emerald-100 px-1.5 py-0.5 text-xs font-semibold text-emerald-700">
+                  {activeCoupons.length}
+                </span>
+              )}
             </TabsTrigger>
             <TabsTrigger value="price">Price History</TabsTrigger>
             <TabsTrigger value="buy">Where to Buy</TabsTrigger>
@@ -660,6 +762,107 @@ async function ProductDetails({ params }: { params: Promise<{ id: string }> }) {
             <p className="text-center text-xs text-slate-400">
               Pruddo analyzes video transcripts and comment sentiment — not just view counts.
             </p>
+          </TabsContent>
+
+          {/* ── Coupons tab ──────────────────────────────── */}
+          <TabsContent value="coupons" className="mt-4 space-y-4">
+            {/* Header banner */}
+            <div className="flex items-center justify-between rounded-xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-4 dark:border-emerald-800 dark:from-emerald-950/30 dark:to-slate-900">
+              <div>
+                <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                  {activeCoupons.length} active coupon{activeCoupons.length !== 1 ? "s" : ""} found
+                </p>
+                <p className="text-xs text-slate-500">
+                  Stack with sale price — max additional savings:{" "}
+                  <span className="font-semibold text-emerald-600">${maxSavings.toFixed(2)}</span>
+                </p>
+              </div>
+              <div className="text-2xl">🎟️</div>
+            </div>
+
+            {/* Active coupons */}
+            <div className="space-y-3">
+              {activeCoupons.map((coupon) => (
+                <CouponCard key={coupon.id} coupon={coupon} />
+              ))}
+            </div>
+
+            {/* Cashback section */}
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2 text-base">
+                  💰 Stack with cashback
+                  <Badge variant="secondary" className="ml-auto text-xs font-normal">
+                    On top of coupon savings
+                  </Badge>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <p className="mb-3 text-xs text-slate-500">
+                  Use a cashback portal before checkout and earn money back on top of any coupon code.
+                </p>
+                {CASHBACK.map((cb) => (
+                  <div
+                    key={cb.provider}
+                    className="flex items-center justify-between rounded-lg border border-slate-100 p-3 hover:border-slate-200 hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-800/50"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className={`flex h-8 w-8 items-center justify-center rounded-lg text-xs font-bold text-white ${cb.color}`}>
+                        {cb.logo}
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-slate-900 dark:text-slate-100">{cb.provider}</p>
+                        <p className="text-xs text-slate-500">{cb.rate}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="text-sm font-semibold text-emerald-600">{cb.savings}</span>
+                      <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300">
+                        Activate →
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+
+            {/* Expired coupons (collapsed style) */}
+            {expiredCoupons.length > 0 && (
+              <div>
+                <p className="mb-2 text-xs font-medium uppercase tracking-wide text-slate-400">
+                  Expired codes ({expiredCoupons.length})
+                </p>
+                <div className="space-y-2">
+                  {expiredCoupons.map((coupon) => (
+                    <CouponCard key={coupon.id} coupon={coupon} />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Extension promo */}
+            <div className="flex flex-col gap-4 rounded-xl border border-indigo-100 bg-gradient-to-br from-indigo-50 to-white p-5 dark:border-indigo-900 dark:from-indigo-950/30 dark:to-slate-900 sm:flex-row sm:items-center">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-indigo-600 text-2xl">
+                🔌
+              </div>
+              <div className="flex-1">
+                <p className="font-semibold text-slate-900 dark:text-slate-100">
+                  Auto-apply codes at checkout
+                </p>
+                <p className="mt-0.5 text-sm text-slate-500">
+                  Install the free Pruddo extension and we'll automatically test every code
+                  at checkout — just like Honey, but with trust scores and fake review detection built in.
+                </p>
+              </div>
+              <a
+                href="https://chromewebstore.google.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="shrink-0 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700"
+              >
+                Add to Chrome — Free
+              </a>
+            </div>
           </TabsContent>
 
           {/* ── Price tab ────────────────────────────────── */}
