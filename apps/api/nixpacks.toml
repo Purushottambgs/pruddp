@@ -1,7 +1,5 @@
 [phases.build]
-cmds = [
-  "cd ../.. && pnpm --filter @pruddo/shared build && pnpm --filter @pruddo/api build"
-]
+cmds = ["pnpm --filter @pruddo/api build"]
 
 [start]
 cmd = "node dist/index.js"
