@@ -29,9 +29,15 @@ importers:
       '@pruddo/shared':
         specifier: workspace:*
         version: link:../../packages/shared
+      bullmq:
+        specifier: ^5.34.6
+        version: 5.71.1
       hono:
         specifier: ^4.7.2
         version: 4.12.9
+      ioredis:
+        specifier: ^5.4.2
+        version: 5.10.1
       zod:
         specifier: ^3.24.1
         version: 3.25.76

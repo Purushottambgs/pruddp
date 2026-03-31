@@ -5,6 +5,7 @@ import { logger } from "hono/logger";
 import { productsRouter } from "./routes/products.js";
 import { searchRouter } from "./routes/search.js";
 import { clicksRouter } from "./routes/clicks.js";
+import { startWorkers } from "./workers.js";
 
 const app = new Hono();
 
@@ -64,3 +65,10 @@ const port = Number(process.env["PORT"] ?? 3001);
 serve({ fetch: app.fetch, port }, () => {
   console.info(`Pruddo API running on http://localhost:${port}`);
 });
+
+// Start background workers in the same process (merged api+worker)
+if (process.env["REDIS_URL"]) {
+  startWorkers();
+} else {
+  console.warn("REDIS_URL not set — background workers disabled");
+}
