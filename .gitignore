@@ -137,3 +137,12 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# Turbo
+.turbo
+
+# pnpm
+.pnpm-store
+
+# Extension build
+apps/extension/dist
