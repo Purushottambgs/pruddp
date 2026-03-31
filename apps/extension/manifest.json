@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "Pruddo — Real Reviews & Prices",
+  "version": "0.0.1",
+  "description": "AI trust scores, review summaries, and price history for any Amazon product.",
+  "permissions": ["sidePanel", "activeTab", "storage"],
+  "host_permissions": [
+    "https://*.amazon.com/*",
+    "https://api.pruddo.ai/*",
+    "http://localhost:3001/*"
+  ],
+  "background": {
+    "service_worker": "src/service-worker.ts",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*.amazon.com/*/dp/*", "https://*.amazon.com/dp/*"],
+      "js": ["src/content-script.ts"],
+      "run_at": "document_idle"
+    }
+  ],
+  "side_panel": {
+    "default_path": "src/side-panel/index.html"
+  },
+  "action": {
+    "default_title": "Open Pruddo"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
