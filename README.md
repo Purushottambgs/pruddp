@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # Pruddo
 
 > Real reviews. Real prices. Before you buy.
@@ -142,5 +142,5 @@ pnpm build
 | GET | `/search?q=...` | Search products |
 | POST | `/clicks/track` | Track affiliate click |
 =======
-# pruddp
+# pruddo
 >>>>>>> ea84e578d6f409a437e739a83457a81f7ef5a2d0
