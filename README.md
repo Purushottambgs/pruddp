@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Pruddo
 
 > Real reviews. Real prices. Before you buy.
@@ -140,3 +141,6 @@ pnpm build
 | GET | `/products/:id/price-history` | 30-day price history |
 | GET | `/search?q=...` | Search products |
 | POST | `/clicks/track` | Track affiliate click |
+=======
+# pruddp
+>>>>>>> ea84e578d6f409a437e739a83457a81f7ef5a2d0
